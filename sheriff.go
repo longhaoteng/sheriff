@@ -188,7 +188,12 @@ func Marshal(options *Options, data interface{}) (interface{}, error) {
 				dest[key] = value
 			}
 		} else {
-			dest[jsonTag] = v
+			// temp
+			if jsonOpts.Contains("string") {
+				dest[jsonTag] = fmt.Sprintf("%v", v)
+			} else {
+				dest[jsonTag] = v
+			}
 		}
 	}
 

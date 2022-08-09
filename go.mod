@@ -1,4 +1,4 @@
-module github.com/liip/sheriff
+module github.com/longhaoteng/sheriff
 
 go 1.14
 

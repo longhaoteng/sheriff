@@ -3,6 +3,7 @@ package sheriff
 import (
 	"encoding/json"
 	"net"
+	"strconv"
 	"testing"
 	"time"
 
@@ -746,4 +747,28 @@ func TestMarshal_NilSlice(t *testing.T) {
 	expect := "[]"
 
 	assert.Equal(t, expect, string(jsonResult))
+}
+
+type TestStringTag struct {
+	Field int64 `json:"field,string"`
+}
+
+func TestMarshal_StringTag(t *testing.T) {
+	v := TestStringTag{
+		Field: 394155329715213780,
+	}
+	o := &Options{}
+
+	actualMap, err := Marshal(o, v)
+	assert.NoError(t, err)
+
+	actual, err := json.Marshal(actualMap)
+	assert.NoError(t, err)
+
+	expected, err := json.Marshal(map[string]interface{}{
+		"field": strconv.FormatInt(v.Field, 10),
+	})
+	assert.NoError(t, err)
+
+	assert.Equal(t, string(expected), string(actual))
 }
