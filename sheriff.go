@@ -118,7 +118,10 @@ func Marshal(options *Options, data interface{}) (interface{}, error) {
 
 		if isEmbeddedField && field.Type.Kind() == reflect.Struct {
 			tt := field.Type
-			parentGroups := strings.Split(field.Tag.Get("groups"), ",")
+			var parentGroups []string
+			if field.Tag.Get("groups") != "" {
+				parentGroups = strings.Split(field.Tag.Get("groups"), ",")
+			}
 			for i := 0; i < tt.NumField(); i++ {
 				nestedField := tt.Field(i)
 				options.nestedGroupsMap[nestedField.Name] = parentGroups
